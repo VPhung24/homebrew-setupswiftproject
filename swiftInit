@@ -1,0 +1,36 @@
+#!/bin/bash
+echo "Starting..."
+
+# should not be in home $HOME
+if [[ (${dir} = "$HOME") ]]; then
+    echo "This script doesn't allow to create a git repo in the home directory."
+    echo "Use another directory."
+    exit 1
+fi
+
+# create .gitignore
+echo ">>> Creating .gitignore..."
+url=https://raw.githubusercontent.com/github/gitignore/main/Swift.gitignore
+curl "${url}" -o .gitignore
+echo ">>> .gitignore created."
+
+# create README.md
+echo ">>> Creating README.md..."
+printf "# %s \n
+## Overview\n\n
+## Requirement\n\n
+## Usage\n\n
+## Features\n\n
+## Reference\n\n
+## Author\n\n
+## License\n\n" >README.md
+
+# create .swiftlint.yml
+echo ">>> Creating .swiftlint.yml..."
+url=https://raw.githubusercontent.com/VPhung24/ViviOSExtensions/main/.swiftlint.yml
+curl "${url}" -o .swiftlint.yml
+echo ">>> .swiftlint.yml created."
+
+# create license
+curl -s "https://api.github.com/licenses/MIT" | jq -r '.body' >LICENSE
+echo ">>> LICENSE is created."
